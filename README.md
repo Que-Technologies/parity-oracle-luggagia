@@ -81,5 +81,5 @@ Save and close the file and continue by enabling the service:
 ````
 After starting the service we can check it using the status command. In order to check again the oracle you can type
 ````
->> wget http://localhost:8080/getUserPseudonym
+>> wget http://localhost:8000/getUserPseudonym
 ````
