@@ -17,7 +17,7 @@ or Strato device.
 >> cd /home/pi/
 >> mkdir oracle
 >> cd oracle
->> git clone https://github.com/Que-Technologies/parity-oracle-test.git
+>> git clone https://github.com/Que-Technologies/parity-oracle-luggagia.git
 ````
 A prompt command will be displayed asking for the github username & password (for a password a personal token should be 
 generated). After retrieving successfully the git package then rename it with the following, deploy and test the Oracle
