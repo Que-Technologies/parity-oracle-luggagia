@@ -1,4 +1,4 @@
-# Raspberry/Strato deployment steps for parity-oracle
+# Raspberry/Strato deployment steps for parity-oracle [1st time deployment].
 
 1. Ensure that the user have root privileges using sudo command
 2. In order to user the Oracle component Nodejs should be installed in prior.
@@ -82,4 +82,23 @@ Save and close the file and continue by enabling the service:
 After starting the service we can check it using the status command. In order to check again the oracle you can type
 ````
 >> wget http://localhost:8000/getUserPseudonym
+````
+
+
+# Raspberry/Strato Update Oracle Application
+Stop any operation of the Oracle application
+````
+>> sudo systemctl stop oracle.service
+````
+Get the updated application by typing:
+````
+>> sudo git pull
+````
+Run the command for updating any necessary libraries (if any):
+````
+>> sudo npm install
+````
+Start again Oracle application
+````
+>> sudo systemctl start oracle.service
 ````
