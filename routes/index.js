@@ -117,7 +117,7 @@ Create scheduler to update user balance every 15 minutes
  * request 2: Retrieve the balance from blockchain for the specific userId.
  * request 3: update the balance on wallet using this userId as well.
  * **/
-schedule.scheduleJob('*/1 * * * *', async function () {
+schedule.scheduleJob('*/15 * * * *', async function () {
 
   console.log('============== Service Status : STARTED =================');
 
