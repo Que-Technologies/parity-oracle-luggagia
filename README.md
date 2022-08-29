@@ -22,7 +22,7 @@ or Strato device.
 A prompt command will be displayed asking for the github username & password (for a password a personal token should be 
 generated). After retrieving successfully the git package then rename it with the following, deploy and test the Oracle
 ````
->> mv parity-oracle-test/ parity-oracle/ 
+>> mv parity-oracle-luggagia/ parity-oracle/ 
 >> cd parity-oracle/bin
 >> node www
 ````
@@ -90,15 +90,18 @@ Stop any operation of the Oracle application
 ````
 >> sudo systemctl stop oracle.service
 ````
-Get the updated application by typing:
+Go to the application folder, remove the old project and clone again the updated:
 ````
->> sudo git pull
-````
-Run the command for updating any necessary libraries (if any):
-````
->> sudo npm install
+>> cd /home/pi/oracle/
+>> sudo rm -R parity-oracle/
+>> git clone https://github.com/Que-Technologies/parity-oracle-luggagia.git
+>> mv parity-oracle-luggagia/ parity-oracle/
+>> git pull
 ````
 Start again Oracle application
 ````
 >> sudo systemctl start oracle.service
 ````
+
+As a scheduled running job is running every 15min you may validate the code running by checking the logs under 
+/var/log/syslog by looking the log *'Service Status : STARTED'*
