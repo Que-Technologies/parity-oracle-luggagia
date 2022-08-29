@@ -122,44 +122,98 @@ schedule.scheduleJob('*/1 * * * *', async function () {
 
   console.log('============== Service Status : STARTED =================');
 
+  var name = await getSerial();
+  var myBalance = await getBalance(name);
+  await updateWallet(name,myBalance);
+
   // var serial = getSerialNumberofRasberry();
   // /home/pi/name
-  var serial = fs.readFileSync('/home/pi/name',
-      {encoding:'utf8', flag:'r'});
-  var cosmosBalance;
-  var getBalance = {
-    url: 'http://localhost:9119/balances/',
-    method: 'GET',
-    json: {
-      "userId": serial
-    }
-  };
+  // var serial = fs.readFileSync('/home/pi/name',
+  //     {encoding:'utf8', flag:'r'});
+  // var cosmosBalance;
+  // var getBalance = {
+  //   url: 'http://localhost:9119/balances/',
+  //   method: 'GET',
+  //   json: {
+  //     "userId": serial
+  //   }
+  // };
 
-  var updateWallet = {
-    url: 'http://160.40.51.98:8080/cim/repository/cim/offchain/updateWalletCreditsBalance',
-    method: 'POST',
-    json: {
-      "lfmName": "defaultmarket",
-      "userId": serial,
-      "creditsAmount": cosmosBalance
-    }
-  };
+  // var updateWallet = {
+  //   url: 'http://160.40.51.98:8080/cim/repository/cim/offchain/updateWalletCreditsBalance',
+  //   method: 'POST',
+  //   json: {
+  //     "lfmName": "defaultmarket",
+  //     "userId": serial,
+  //     "creditsAmount": cosmosBalance
+  //   }
+  // };
 
-  request(getBalance, (err, response, body) => {
-    if (!err && response.statusCode == 200) {
-      cosmosBalance = body.balances[0].amount;
-      console.log("COSMOS BALANCE RETRIEVED SUCCESSFULLY - CURRENT BALANCE IS: ", body.balances[0].amount);
-    }
-  });
-
-  request(updateWallet, (err, response, body) => {
-    if (!err && response.statusCode == 200) {
-      console.log("USER UPDATED SUCCESSFULLY");
-    }
-  });
+  // request(getBalance, (err, response, body) => {
+  //   if (!err && response.statusCode == 200) {
+  //     cosmosBalance = body.balances[0].amount;
+  //     console.log("COSMOS BALANCE RETRIEVED SUCCESSFULLY - CURRENT BALANCE IS: ", body.balances[0].amount);
+  //   }
+  // });
+  //
+  // request(updateWallet, (err, response, body) => {
+  //   if (!err && response.statusCode == 200) {
+  //     console.log("USER UPDATED SUCCESSFULLY");
+  //   }
+  // });
 
   console.log('============== Service Status : FINISHED =================');
 });
 
+function getSerial(){
+  return new Promise(resolve => {
+    var serial = fs.readFileSync('/home/pi/name',
+        {encoding:'utf8', flag:'r'});
+    console.log("My serial is:"+serial);
+    resolve(serial);
+  });
+}
+
+function getBalance(serial){
+  return new Promise(resolve => {
+    var getBalance = {
+      url: 'http://localhost:9119/balances/',
+      method: 'GET',
+      json: {
+        "userId": serial
+      }
+    };
+    var cosmosBalance;
+    request(getBalance, (err, response, body) => {
+      if (!err && response.statusCode == 200) {
+        cosmosBalance = body.balances[0].amount;
+        console.log("COSMOS BALANCE RETRIEVED SUCCESSFULLY - CURRENT BALANCE IS: ", body.balances[0].amount);
+      }
+    });
+
+    resolve(cosmosBalance);
+  });
+}
+
+function updateWallet(serial,balance){
+  return new Promise(resolve => {
+    var updateWallet = {
+      url: 'http://160.40.51.98:8080/cim/repository/cim/offchain/updateWalletCreditsBalance',
+      method: 'POST',
+      json: {
+        "lfmName": "defaultmarket",
+        "userId": serial,
+        "creditsAmount": cosmosBalance
+      }
+    };
+    request(updateWallet, (err, response, body) => {
+      if (!err && response.statusCode == 200) {
+        console.log("USER UPDATED SUCCESSFULLY");
+      }
+    });
+
+    resolve();
+  });
+}
 
 module.exports = router;
