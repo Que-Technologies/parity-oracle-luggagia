@@ -124,7 +124,7 @@ schedule.scheduleJob('*/1 * * * *', async function () {
 
   // var serial = getSerialNumberofRasberry();
   // /home/pi/name
-  var serial = fs.readFileSync('/home/pi/serial',
+  var serial = fs.readFileSync('/home/pi/name',
       {encoding:'utf8', flag:'r'});
   var cosmosBalance;
   var getBalance = {
