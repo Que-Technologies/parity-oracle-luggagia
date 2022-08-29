@@ -188,10 +188,10 @@ function getBalance(serial){
       if (!err && response.statusCode == 200) {
         cosmosBalance = body.balances[0].amount;
         console.log("COSMOS BALANCE RETRIEVED SUCCESSFULLY - CURRENT BALANCE IS: ", body.balances[0].amount);
+        resolve(cosmosBalance);
       }
     });
 
-    resolve(cosmosBalance);
   });
 }
 
@@ -209,10 +209,11 @@ function updateWallet(serial,balance){
     request(updateWallet, (err, response, body) => {
       if (!err && response.statusCode == 200) {
         console.log("USER UPDATED SUCCESSFULLY");
+        resolve();
+
       }
     });
 
-    resolve();
   });
 }
 
