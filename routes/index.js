@@ -169,8 +169,9 @@ schedule.scheduleJob('*/1 * * * *', async function () {
 
 function getSerial(){
   return new Promise(resolve => {
-    var serial = fs.readFileSync('/home/pi/name',
+    var serialAll = fs.readFileSync('/home/pi/name',
         {encoding:'utf8', flag:'r'});
+    var serial = serialAll.split('-')[1];
     console.log("My serial is:"+serial);
     resolve(serial);
   });
@@ -183,8 +184,8 @@ function getPseudonym(serial){
         method: 'GET',
         json: true
     }, function(error, response, body){
-        console.log("body: "+body);
-        console.log("response: "+response);
+        // console.log("body: "+body);
+        // console.log("response: "+response);
         console.log("Pseudonym: "+body["pseudonym"]);
         resolve(body["pseudonym"]);
 
@@ -200,6 +201,7 @@ function getAddress(pseudonym){
       method: 'GET'
     };
     request(getAddress, (err, response, body) => {
+      console.log("Make request to: http://localhost:9119/player/"+pseudonym);
       if (!err && response.statusCode == 200) {
         var address = body.player.address;
         console.log("COSMOS ADDRESS RETRIEVED SUCCESSFULLY - ADDRESS IS: ", address);
