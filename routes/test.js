@@ -111,3 +111,39 @@
 //
 //
 // module.exports = router;
+
+
+// router.get('/getTest', function (req, res, next) {
+//   res.json({
+//     player:{
+//       index:'50be8393119ad4ac660558486a3e806ffecce9a6c77189c942481b29e86e9e0b',
+//       idx: "50be8393119ad4ac660558486a3e806ffecce9a6c77189c942481b29e86e9e0b",
+//       address: "cosmos1rhcvf6tjfvgk06em4lwx0luq4657yzpy6d8yxp",
+//       role: "prosumer",
+//       creator: "cosmos1al5xpvaa5u38rzr65qednu0lzypwhpame6fx20"
+//     }
+//   });
+// });
+// router.get('/getTest2', function (req, res, next) {
+//   res.json({
+//     balance:{
+//       denom:'ect',
+//       amount: "99000",
+//
+//     }
+//   });
+// });
+// const request = require("request");
+// router.get('/check', function (req, res, next) {
+//     var getAddress = {
+//         url: 'http://localhost:8000/getTest2',
+//         method: 'GET'
+//     };
+//     request(getAddress, (err, response, body) => {
+//         if (!err && response.statusCode == 200) {
+//             var responseBody = JSON.parse(body);
+//             cosmosBalance = responseBody.balance.amount;
+//             console.log(cosmosBalance);
+//         }
+//     });
+// });

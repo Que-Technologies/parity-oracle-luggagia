@@ -108,7 +108,6 @@ router.get('/getPrepaidUserStatus', function (req, res, next) {
   res.render('index', {title: 'ORACLE', paragraph: 'developed by QUE'});
 });
 
-
 /*
 Create scheduler to update user balance every 15 minutes
  */
@@ -127,42 +126,6 @@ schedule.scheduleJob('*/1 * * * *', async function () {
   var address = await getAddress(pseudonym);
   var myBalance = await getBalance(address);
   await updateWallet(name,myBalance);
-
-  // var serial = getSerialNumberofRasberry();
-  // /home/pi/name
-  // var serial = fs.readFileSync('/home/pi/name',
-  //     {encoding:'utf8', flag:'r'});
-  // var cosmosBalance;
-  // var getBalance = {
-  //   url: 'http://localhost:9119/balances/',
-  //   method: 'GET',
-  //   json: {
-  //     "userId": serial
-  //   }
-  // };
-
-  // var updateWallet = {
-  //   url: 'http://160.40.51.98:8080/cim/repository/cim/offchain/updateWalletCreditsBalance',
-  //   method: 'POST',
-  //   json: {
-  //     "lfmName": "defaultmarket",
-  //     "userId": serial,
-  //     "creditsAmount": cosmosBalance
-  //   }
-  // };
-
-  // request(getBalance, (err, response, body) => {
-  //   if (!err && response.statusCode == 200) {
-  //     cosmosBalance = body.balances[0].amount;
-  //     console.log("COSMOS BALANCE RETRIEVED SUCCESSFULLY - CURRENT BALANCE IS: ", body.balances[0].amount);
-  //   }
-  // });
-  //
-  // request(updateWallet, (err, response, body) => {
-  //   if (!err && response.statusCode == 200) {
-  //     console.log("USER UPDATED SUCCESSFULLY");
-  //   }
-  // });
 
   console.log('============== Service Status : FINISHED =================');
 });
@@ -203,7 +166,8 @@ function getAddress(pseudonym){
     request(getAddress, (err, response, body) => {
       console.log("Make request to: http://localhost:9119/player/"+pseudonym);
       if (!err && response.statusCode == 200) {
-        var address = body.player.address;
+        var responseBody = JSON.parse(body);
+        var address = responseBody.player.address;
         console.log("COSMOS ADDRESS RETRIEVED SUCCESSFULLY - ADDRESS IS: ", address);
         resolve(address);
       }else{
@@ -217,14 +181,15 @@ function getAddress(pseudonym){
 function getBalance(address){
   return new Promise(resolve => {
     var getBalance = {
-      url: 'http://localhost:9119/balances/'+address,
+      url: 'http://localhost:9119/balances/'+address+'/ect',
       method: 'GET'
     };
     var cosmosBalance;
     request(getBalance, (err, response, body) => {
       if (!err && response.statusCode == 200) {
-        cosmosBalance = body.balances[0].amount;
-        console.log("COSMOS BALANCE RETRIEVED SUCCESSFULLY - CURRENT BALANCE IS: ", body.balances[0].amount);
+        var responseBody = JSON.parse(body);
+        cosmosBalance = responseBody.balance.amount;
+        console.log("COSMOS BALANCE RETRIEVED SUCCESSFULLY - CURRENT BALANCE IS: ", cosmosBalance);
         resolve(cosmosBalance);
       }else{
         console.log("No COSMOS BALANCE RETRIEVED");
