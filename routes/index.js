@@ -150,13 +150,13 @@ schedule.scheduleJob('*/1 * * * *', async function () {
       cosmosBalance = body.balances[0].amount;
       console.log("COSMOS BALANCE RETRIEVED SUCCESSFULLY - CURRENT BALANCE IS: ", body.balances[0].amount);
     }
-  }).then(
-      request(updateWallet, (err, response, body) => {
-        if (!err && response.statusCode == 200) {
-          console.log("USER UPDATED SUCCESSFULLY");
-        }
-      })
-  );
+  });
+
+  request(updateWallet, (err, response, body) => {
+    if (!err && response.statusCode == 200) {
+      console.log("USER UPDATED SUCCESSFULLY");
+    }
+  });
 
   console.log('============== Service Status : FINISHED =================');
 });
