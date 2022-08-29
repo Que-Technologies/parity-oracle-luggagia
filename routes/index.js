@@ -123,7 +123,9 @@ schedule.scheduleJob('*/1 * * * *', async function () {
   console.log('============== Service Status : STARTED =================');
 
   var name = await getSerial();
-  var myBalance = await getBalance(name);
+  var pseudonym = await getPseudonym(name);
+  var address = await getAddress(pseudonym);
+  var myBalance = await getBalance(address);
   await updateWallet(name,myBalance);
 
   // var serial = getSerialNumberofRasberry();
@@ -174,14 +176,47 @@ function getSerial(){
   });
 }
 
-function getBalance(serial){
+function getPseudonym(serial){
+  return new Promise(resolve => {
+    request({
+        url: 'http://160.40.51.98:8080/cim/repository/cim/offchain/getPseudonymFromId?lfmName=defaultmarket&resourceId='+serial,
+        method: 'GET',
+        json: true
+    }, function(error, response, body){
+        console.log("body: "+body);
+        console.log("response: "+response);
+        console.log("Pseudonym: "+body["pseudonym"]);
+        resolve(body["pseudonym"]);
+
+    });
+    // resolve(serial);
+  });
+}
+
+function getAddress(pseudonym){
+  return new Promise(resolve => {
+    var getAddress = {
+      url: 'http://localhost:9119/player/'+pseudonym,
+      method: 'GET'
+    };
+    request(getAddress, (err, response, body) => {
+      if (!err && response.statusCode == 200) {
+        var address = body.player.address;
+        console.log("COSMOS ADDRESS RETRIEVED SUCCESSFULLY - ADDRESS IS: ", address);
+        resolve(address);
+      }else{
+        console.log("No COSMOS ADDRESS RETRIEVED");
+        resolve("0");
+      }
+    });
+  });
+}
+
+function getBalance(address){
   return new Promise(resolve => {
     var getBalance = {
-      url: 'http://localhost:9119/balances/',
-      method: 'GET',
-      json: {
-        "userId": serial
-      }
+      url: 'http://localhost:9119/balances/'+address,
+      method: 'GET'
     };
     var cosmosBalance;
     request(getBalance, (err, response, body) => {
@@ -189,6 +224,10 @@ function getBalance(serial){
         cosmosBalance = body.balances[0].amount;
         console.log("COSMOS BALANCE RETRIEVED SUCCESSFULLY - CURRENT BALANCE IS: ", body.balances[0].amount);
         resolve(cosmosBalance);
+      }else{
+        console.log("No COSMOS BALANCE RETRIEVED");
+
+        resolve(0)
       }
     });
 
