@@ -195,7 +195,7 @@ function getBalance(serial){
   });
 }
 
-function updateWallet(serial,balance){
+function updateWallet(serial,cosmosBalance){
   return new Promise(resolve => {
     var updateWallet = {
       url: 'http://160.40.51.98:8080/cim/repository/cim/offchain/updateWalletCreditsBalance',
