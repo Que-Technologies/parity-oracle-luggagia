@@ -143,7 +143,7 @@ function getSerial(){
 function getPseudonym(serial){
   return new Promise(resolve => {
     request({
-        url: 'http://160.40.51.98:8080/cim/repository/cim/offchain/getPseudonymFromId?lfmName=defaultmarket&resourceId='+serial,
+        url: 'http://160.40.51.98:8080/cim/repository/cim/offchain/getPseudonymFromId?lfmName=lugpilotmarket&resourceId='+serial,
         method: 'GET',
         json: true
     }, function(error, response, body){
@@ -207,7 +207,7 @@ function updateWallet(serial,cosmosBalance){
       url: 'http://160.40.51.98:8080/cim/repository/cim/offchain/updateWalletCreditsBalance',
       method: 'POST',
       json: {
-        "lfmName": "defaultmarket",
+        "lfmName": "lugpilotmarket",
         "userId": serial,
         "creditsAmount": cosmosBalance
       }
