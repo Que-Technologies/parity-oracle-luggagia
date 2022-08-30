@@ -209,7 +209,7 @@ function updateWallet(serial,cosmosBalance){
       json: {
         "lfmName": "lugpilotmarket",
         "userId": serial,
-        "creditsAmount": cosmosBalance
+        "creditsAmount": parseInt(cosmosBalance,10)
       }
     };
     request(updateWallet, (err, response, body) => {
