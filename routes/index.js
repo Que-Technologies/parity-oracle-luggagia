@@ -134,7 +134,7 @@ function getSerial(){
   return new Promise(resolve => {
     var serialAll = fs.readFileSync('/home/pi/name',
         {encoding:'utf8', flag:'r'});
-    var serial = serialAll.split('-')[1];
+    var serial = serialAll.split('-')[1].trim();
     console.log("My serial is:"+serial);
     resolve(serial);
   });
