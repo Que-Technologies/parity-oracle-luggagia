@@ -117,7 +117,7 @@ Create scheduler to update user balance every 15 minutes
  * request 2: Retrieve the balance from blockchain for the specific userId.
  * request 3: update the balance on wallet using this userId as well.
  * **/
-schedule.scheduleJob('*/1 * * * *', async function () {
+schedule.scheduleJob('*/15 * * * *', async function () {
 
   console.log('============== Service Status : STARTED =================');
 
@@ -214,9 +214,9 @@ function updateWallet(serial,cosmosBalance){
     };
     console.log("Update wallet request: ",updateWallet);
     request(updateWallet, (err, response, body) => {
-      var resp = JSON.parse(body);
+      // var resp = JSON.parse(body);
       console.log("Update wallet response status code: ",response.statusCode);
-      console.log("Update wallet response body: ",resp);
+      // console.log("Update wallet response body: ",resp);
       if (!err && response.statusCode == 200) {
         console.log("USER UPDATED SUCCESSFULLY");
         resolve();
